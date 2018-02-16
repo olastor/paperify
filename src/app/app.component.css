@@ -1,0 +1,24 @@
+mat-spinner {
+  margin: 15px auto;
+}
+
+.app-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-fill {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+.logo {
+  text-transform: uppercase;
+  letter-spacing: .24em;
+  cursor: pointer;
+}
+
+.content {
+  height: 100%;
+}

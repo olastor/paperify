@@ -1,0 +1,104 @@
+:host {
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.wrapper {
+  min-height: 300px;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.writing, .reading {
+  flex: 50%;
+}
+
+.writing {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  padding-top: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.params {
+  width: 100%;
+}
+
+.params input, .params mat-error {
+  font-family: monospace;
+}
+
+.params input {
+  font-size: .9em;
+}
+
+.reading {
+  background: #ECEFF1;
+}
+
+.reading > object {
+  width: 100%;
+  height: 100%;
+}
+
+#editor {
+  height: 100%;
+  width: 100%;
+  min-height: 100px;
+}
+
+.editor-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+.progress-stripes {
+  width: 100%;
+  height: 10px;
+}
+
+.progress-stripes div {
+  width: 100%;
+  height: 100%;
+  background-color: #FFC107;
+  background-size: 30px 30px;
+  background-image: linear-gradient(
+    135deg, rgba(255, 255, 255, .45) 25%, transparent 25%,
+    transparent 50%, rgba(255, 255, 255, .45) 50%, rgba(255, 255, 255, .45) 75%,
+    transparent 75%, transparent);
+  animation: animate-stripes 2s linear infinite;
+}
+
+@keyframes animate-stripes {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 60px 0;
+    }
+}
+
+.preview-error {
+  background: #EF9A9A;
+  padding: 10px;
+}
+
+.preview-error p {
+  font-weight: bold;
+}
+
+.placeholder {
+  text-align: center;
+  padding-top: 30px;
+}

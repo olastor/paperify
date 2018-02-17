@@ -54,7 +54,7 @@ export class EditorService {
    */
   public getLocalDoc(docname: string) {
     return this.http.get(
-      this.url + '/assets/docs/' + docname + '.json', {
+      '/assets/docs/' + docname + '.json', {
         headers: new Headers({
           'Content-Type': 'application/json',
         })

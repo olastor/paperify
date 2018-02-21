@@ -7,8 +7,6 @@ import { ApiConfig } from '../../api.config';
 @Injectable()
 export class EditorService {
 
-  url: string = ApiConfig.url;
-
   constructor(private http: HttpClient) {}
 
   /**
@@ -23,7 +21,7 @@ export class EditorService {
     params: string = ''
   ): Observable<any> {
     return this.http.post(
-      this.url + '/api/generate', JSON.stringify({
+      ApiConfig.url + '/api/generate', JSON.stringify({
         text, params
       }), {
       headers: new HttpHeaders({
@@ -39,7 +37,7 @@ export class EditorService {
    */
   public getValidParams(): Observable<any> {
     return this.http.get(
-      this.url + '/api/list/params', {
+      ApiConfig.url + '/api/list/params', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         })

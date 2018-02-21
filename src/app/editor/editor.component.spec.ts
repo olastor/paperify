@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../shared/material.module';
 import { EditorComponent } from './editor.component';
+import { EditorService } from './editor.service';
+import { FakeEditorService } from './testing/fake-editor.service';
 
 describe('EditorComponent', () => {
   let component: EditorComponent;
@@ -8,7 +13,17 @@ describe('EditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorComponent ]
+      imports: [
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule
+      ],
+      declarations: [ EditorComponent ],
+      providers: [
+        { provide: EditorService, useClass: FakeEditorService }
+      ]
     })
     .compileComponents();
   }));

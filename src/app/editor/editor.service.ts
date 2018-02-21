@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
-import { Observable, Subscription } from 'rxjs/Rx';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { ApiConfig } from '../../api.config';
 
 @Injectable()
@@ -8,7 +9,7 @@ export class EditorService {
 
   url: string = ApiConfig.url;
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   /**
    * Generate a PDF.
@@ -25,7 +26,7 @@ export class EditorService {
       this.url + '/api/generate', JSON.stringify({
         text, params
       }), {
-      headers: new Headers({
+      headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     });
@@ -36,10 +37,10 @@ export class EditorService {
    *
    * @return     {Observable}  Handler for request.
    */
-  public getValidParams() {
+  public getValidParams(): Observable<any> {
     return this.http.get(
       this.url + '/api/list/params', {
-        headers: new Headers({
+        headers: new HttpHeaders({
           'Content-Type': 'application/json',
         })
       }
@@ -55,7 +56,7 @@ export class EditorService {
   public getLocalDoc(docname: string) {
     return this.http.get(
       '/assets/docs/' + docname + '.json', {
-        headers: new Headers({
+        headers: new HttpHeaders({
           'Content-Type': 'application/json',
         })
       }

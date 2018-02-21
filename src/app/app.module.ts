@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { RouterModule, PreloadAllModules } from '@angular/router';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ROUTES } from './app.routes';
-import { SharedModule } from './utils/shared.module';
+import { SharedModule } from './shared/shared.module';
 import { EditorModule } from './editor/editor.module';
 import { AppComponent } from './app.component';
 import { EditorService } from './editor/editor.service';
@@ -21,7 +21,7 @@ import { EditorRouteGuard } from './editor/editor.guard';
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     SharedModule,
     EditorModule

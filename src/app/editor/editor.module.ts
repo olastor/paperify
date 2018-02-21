@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../utils/shared.module';
+import { SharedModule } from '../shared/shared.module';
 import { EditorComponent } from './editor.component';
 
 @NgModule({

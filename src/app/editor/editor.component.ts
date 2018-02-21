@@ -6,7 +6,7 @@ import { EditorService } from './editor.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
 
 declare var ace: any;
 
@@ -16,8 +16,7 @@ declare var ace: any;
   styleUrls: [
     './editor.component.css',
     '../app.component.css'
-  ],
-  host: {'window:beforeunload':'doSomething'}
+  ]
 })
 export class EditorComponent implements OnInit {
 
@@ -33,9 +32,9 @@ export class EditorComponent implements OnInit {
   editorTextChanged: Subject<string> = new Subject<string>();
 
   previewUrl: any;
-  hash: string; // = id for downloading
+  hash: string = ''; // = id for downloading
 
-  autorenew: boolean = true;
+  autorenew: boolean = false;
 
   params: string = '';
   reValidParams: RegExp;
@@ -54,7 +53,6 @@ export class EditorComponent implements OnInit {
     };
 
     this.editorService.getValidParams()
-      .map(res => res.json())
       .subscribe(res => this.reValidParams = new RegExp('^(\\s*|' + res.join('|') + ')*$'));
 
     this.editorTextChanged
@@ -136,7 +134,6 @@ export class EditorComponent implements OnInit {
 
     this.loading = true;
     this.editorService.generate(text, this.params)
-      .map(res => res.json())
       .subscribe(
         res => {
           this.loading = false;
@@ -170,10 +167,8 @@ export class EditorComponent implements OnInit {
       if (['quickstart'].includes(id)) {
         this.editorService
           .getLocalDoc(id)
-          .map(res => res.json())
           .subscribe(
             res => {
-                console.log("res", res);
               this.initialLoading = false;
               this.params = res['params'];
               this.editor.setValue(res['text']);

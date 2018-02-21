@@ -32,7 +32,7 @@ export class EditorComponent implements OnInit {
   editorTextChanged: Subject<string> = new Subject<string>();
 
   previewUrl: any;
-  hash: string = ''; // = id for downloading
+  token: string = ''; // = id for downloading
 
   autorenew: boolean = false;
 
@@ -125,8 +125,8 @@ export class EditorComponent implements OnInit {
    * @param      {string}  extension  The extension
    */
   download(extension: string): void {
-    if (!extension || !this.hash) return;
-    window.open(ApiConfig.url + '/api/download/' + this.hash + '/' + extension, '_blank');
+    if (!extension || !this.token) return;
+    window.open(ApiConfig.url + '/api/download/' + this.token + '/' + extension, '_blank');
   }
 
   /**
@@ -139,11 +139,11 @@ export class EditorComponent implements OnInit {
     this.loading = true;
     this.editorService.generate(text, this.params)
       .subscribe(
-        res => {
+        token => {
           this.loading = false;
           this.errorPreview = '';
-          this.hash = res['hash'];
-          this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl('data:application/pdf;base64,' + res['base64']);
+          this.token = token;
+          this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(ApiConfig.url + '/temp/' + token + '.pdf');
         },
         err => {
           this.loading = false;

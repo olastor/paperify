@@ -112,6 +112,10 @@ export class EditorComponent implements OnInit {
     this.editor = ace.edit(this.editorWrapper.nativeElement);
     const MarkdownMode = ace.require('ace/mode/markdown').Mode;
     this.editor.session.setMode(new MarkdownMode());
+    this.editor.session.setUseWrapMode(true);
+    this.editor.session.setTabSize(2);
+    this.editor.setOption('cursorStyle', 'slim');
+    this.editor.setOption('highlightActiveLine', false);
     this.editor.getSession().on('change', () => this.editorTextChanged.next(this.editor.getValue()));
   }
 

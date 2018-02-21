@@ -1,27 +1,26 @@
-# Paperify
+# paperify
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
+[![Build Status](https://travis-ci.org/olastor/paperify.svg?branch=master)](https://travis-ci.org/olastor/paperify)
+[![dependencies Status](https://david-dm.org/olastor/paperify/status.svg)](https://david-dm.org/olastor/paperify)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-## Development server
+## About
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This is a web client for editing and previewing documents, which are generated with [Pandoc](https://pandoc.org/). Please visit [paperify.org](https://www.paperify.org) for a demo.
 
-## Code scaffolding
+## Developement
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+After cloning this repository the following steps are required to start the developement server:
 
-## Build
+1. Make sure the URL in `src/api.config.ts` points to the correct server (i.e. `http://localhost:3002`)
+2. Run `yarn install` (optionally `npm install`)
+3. Run `yarn start`
+4. Navigate browser to `http://localhost:4200`
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+For more information visit [https://cli.angular.io/](https://cli.angular.io/).
 
-## Running unit tests
+## Building for production
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. Run `yarn install`
+2. Run `yarn build`
+3. Copy the build from `dist/` to your webserver 

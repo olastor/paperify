@@ -147,7 +147,12 @@ export class EditorComponent implements OnInit {
         },
         err => {
           this.loading = false;
-          this.errorPreview = err.text();
+
+          if (err.error instanceof ErrorEvent) {
+            this.errorPreview = 'Failed to connect to server: ' + err.error.message;
+          } else {
+            this.errorPreview = err.error;
+          }
         }
       );
   }

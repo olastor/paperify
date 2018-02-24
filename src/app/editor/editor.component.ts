@@ -3,10 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiConfig } from '../../api.config';
 import { EditorService } from './editor.service';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/map';
 
 declare var ace: any;
 
@@ -29,12 +25,9 @@ export class EditorComponent implements OnInit {
   errorParams: string = '';
 
   editor: any;
-  editorTextChanged: Subject<string> = new Subject<string>();
 
   previewUrl: any;
   token: string = ''; // = id for downloading
-
-  autorenew: boolean = false;
 
   params: string = '';
   reValidParams: RegExp;
@@ -54,15 +47,6 @@ export class EditorComponent implements OnInit {
 
     this.editorService.getValidParams()
       .subscribe(res => this.reValidParams = new RegExp('^(\\s*|' + res.join('|') + ')*$'));
-
-    this.editorTextChanged
-      .debounceTime(1600)
-      .distinctUntilChanged()
-      .subscribe(model => {
-        if (this.autorenew) {
-          this.generate();
-        }
-      });
   }
 
   /**
@@ -88,24 +72,6 @@ export class EditorComponent implements OnInit {
   }
 
   /**
-   * Event handler for submitting params form.
-   *
-   * @param      {any}  evt     The event
-   * @return     {boolean}  Whether form is valid or not
-   */
-  submitParams(evt = null): boolean {
-    if (evt) evt.preventDefault();
-
-    const valid = this.checkParams();
-
-    if (valid && this.autorenew) {
-      this.generate();
-    }
-
-    return valid;
-  }
-
-  /**
    * Initializes the ACE editor.
    */
   initEditor(): void {
@@ -116,7 +82,15 @@ export class EditorComponent implements OnInit {
     this.editor.session.setTabSize(2);
     this.editor.setOption('cursorStyle', 'slim');
     this.editor.setOption('highlightActiveLine', false);
-    this.editor.getSession().on('change', () => this.editorTextChanged.next(this.editor.getValue()));
+    this.editor.commands.addCommand({
+      name: 'refresh-save',
+      bindKey: {
+        win: 'Ctrl-S',
+        mac: 'Command-S',
+        sender: 'editor|cli'
+      },
+      exec: () => this.generate()
+    });
   }
 
   /**
@@ -132,7 +106,9 @@ export class EditorComponent implements OnInit {
   /**
    * Loads preview for the current state of the document.
    */
-  generate(): void {
+  generate(evt = null): void {
+    if (evt) evt.preventDefault();
+
     const text = this.editor.getValue();
     if (!this.checkParams() || !text || this.loading) return;
 

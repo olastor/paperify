@@ -3,7 +3,7 @@
   <div class="writing">
     <div class="panel">
       <!-- Params Input -->
-      <form (submit)="submitParams($event)" class="flex-fill">
+      <form (submit)="generate()" class="flex-fill">
         <mat-form-field class="params">
           <input
             matInput
@@ -11,7 +11,7 @@
             name="params"
             [pattern]="reValidParams"
             [(ngModel)]="params"
-            (change)="submitParams()"
+            (change)="checkParams()"
             placeholder="CLI Parameters"
             autocomplete="off"
             required="true"
@@ -26,19 +26,11 @@
         <button
           mat-icon-button
           color="primary"
-          (click)="autorenew = !autorenew"
-          [title]="'Autorenew ' + (autorenew ? 'En' : 'Dis') + 'abled'"
-        >
-          <mat-icon *ngIf="!autorenew">sync_disabled</mat-icon>
-          <mat-icon *ngIf="autorenew">sync</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="primary"
           (click)="generate()"
-          title="Update Preview"
+          [disabled]="errorParams.length > 0"
+          title="Update Preview (Ctrl-S)"
         >
-          <mat-icon>play_circle_filled</mat-icon>
+          <mat-icon>sync</mat-icon>
         </button>
         <button
           mat-icon-button

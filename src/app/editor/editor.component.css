@@ -26,17 +26,11 @@
 .panel {
   display: flex;
   align-items: center;
-  padding: 5px;
-  padding-top: 10px;
   border-bottom: 1px solid #ccc;
 }
 
 .params {
   width: 100%;
-}
-
-.params input, .params mat-error {
-  font-family: monospace;
 }
 
 .params input {
@@ -102,4 +96,8 @@
 .placeholder {
   text-align: center;
   padding-top: 30px;
+}
+
+.hidden {
+  display: none;
 }

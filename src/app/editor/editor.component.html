@@ -1,33 +1,15 @@
 <mat-spinner *ngIf="initialLoading"></mat-spinner>
 <div [style.display]="initialLoading ? 'none': ''" class="wrapper">
   <div class="writing">
-    <div class="panel">
-      <!-- Params Input -->
-      <form (submit)="generate()" class="flex-fill">
-        <mat-form-field class="params">
-          <input
-            matInput
-            type="text"
-            name="params"
-            [pattern]="reValidParams"
-            [(ngModel)]="params"
-            (change)="checkParams()"
-            placeholder="CLI Parameters"
-            autocomplete="off"
-            required="true"
-          >
-          <mat-error *ngIf="errorParams.length > 0">{{ errorParams }}</mat-error>
-        </mat-form-field>
-        <input type="submit" style="display: none;">
-      </form>
+    <div>
+      <div *ngIf="!showSettings" class="panel">
+        <!-- Action Buttons -->
+        <div class="flex-fill"></div>
 
-      <!-- Action Buttons -->
-      <div>
         <button
           mat-icon-button
           color="primary"
           (click)="generate()"
-          [disabled]="errorParams.length > 0"
           title="Update Preview (Ctrl-S)"
         >
           <mat-icon>sync</mat-icon>
@@ -41,24 +23,38 @@
         >
           <mat-icon>file_download</mat-icon>
         </button>
-      </div>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="showSettings = !showSettings"
+          title="Show Settings"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
 
-      <mat-menu #downloadMenu="matMenu">
-        <button mat-menu-item (click)="download('pdf')">
-          <mat-icon>file_download</mat-icon>
-          <span>PDF</span>
-        </button>
-        <button mat-menu-item (click)="download('tex')">
-          <mat-icon>file_download</mat-icon>
-          <span>LaTeX</span>
-        </button>
-        <button mat-menu-item (click)="download('md')">
-          <mat-icon>file_download</mat-icon>
-          <span>Markdown</span>
-        </button>
-      </mat-menu>
+        <mat-menu #downloadMenu="matMenu">
+          <button mat-menu-item (click)="download('pdf')">
+            <mat-icon>file_download</mat-icon>
+            <span>PDF</span>
+          </button>
+          <button mat-menu-item (click)="download('tex')">
+            <mat-icon>file_download</mat-icon>
+            <span>LaTeX</span>
+          </button>
+          <button mat-menu-item (click)="download('md')">
+            <mat-icon>file_download</mat-icon>
+            <span>Markdown</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
-    <div class="flex-fill editor-wrapper">
+    <app-settings
+      *ngIf="showSettings"
+      [currentParams]="params"
+      (close)="showSettings = !showSettings"
+      (update)="settingsChanged($event)"
+    ></app-settings>
+    <div class="flex-fill editor-wrapper" [class.hidden]="showSettings">
       <div #editor id="editor"></div>
     </div>
   </div>

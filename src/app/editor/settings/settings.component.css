@@ -1,0 +1,21 @@
+mat-checkbox {
+  font-size: 14px;
+}
+
+.mono {
+  font-family: monospace;
+}
+
+.mat-tab-group {
+  font-family: Catamaran, "Helvetica Neue", sans-serif;
+}
+
+.wrapper-options {
+  padding: 20px;
+  padding-top: 0;
+}
+
+.wrapper-options > div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

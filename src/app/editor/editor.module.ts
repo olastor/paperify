@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { EditorComponent } from './editor.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { EditorComponent } from './editor.component';
     ReactiveFormsModule
   ],
   declarations: [
-    EditorComponent
+    EditorComponent,
+    SettingsComponent
   ],
   exports: [
     EditorComponent

@@ -32,6 +32,8 @@ export class EditorComponent implements OnInit {
   params: string = '';
   reValidParams: RegExp;
 
+  showSettings: boolean = false;
+
   constructor(
     private editorService: EditorService,
     private route: ActivatedRoute,

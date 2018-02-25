@@ -1,35 +1,21 @@
-.param {
-  font-weight: bold;
+mat-checkbox {
+  font-size: 14px;
+}
+
+.mono {
   font-family: monospace;
 }
 
-mat-checkbox {
-  font-size: 13px;
+.mat-tab-group {
+  font-family: Catamaran, "Helvetica Neue", sans-serif;
 }
 
-
-.wrapper-checkbox > div {
-  margin-top: 50px;
-  margin-bottom: 50px;
+.wrapper-options {
+  padding: 20px;
+  padding-top: 0;
 }
 
-.number-input {
-  width: 50px;
-  margin-right: 10px;
-}
-
-.options {
-  display: flex;
-  flex-direction: row;
-}
-
-.options > div {
-  flex:  50%;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.options > div > div {
-  margin-top: 20px;
-  margin-bottom: 20px;
+.wrapper-options > div {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

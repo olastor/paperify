@@ -8,6 +8,10 @@ mat-spinner {
   flex-direction: column;
 }
 
+.flex {
+  display: flex;
+}
+
 .flex-fill {
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;

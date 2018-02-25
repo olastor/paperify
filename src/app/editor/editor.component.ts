@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiConfig } from '../../api.config';
@@ -22,7 +22,6 @@ export class EditorComponent implements OnInit {
   loading: boolean = false;
 
   errorPreview: string = '';
-  errorParams: string = '';
 
   editor: any;
 
@@ -47,7 +46,8 @@ export class EditorComponent implements OnInit {
       }
     };
 
-    this.editorService.getValidParams()
+    this.editorService
+      .getValidParams()
       .subscribe(res => this.reValidParams = new RegExp('^(\\s*|' + res.join('|') + ')*$'));
   }
 
@@ -68,7 +68,7 @@ export class EditorComponent implements OnInit {
     // Assigning the error directly by not introducing
     // the 'error' variable results in a console error
     // because the calculation takes too long.
-    this.errorParams = error;
+    this.errorPreview = error;
 
     return valid;
   }
@@ -142,6 +142,16 @@ export class EditorComponent implements OnInit {
    */
   hasChanges(): boolean {
     return this.editor && this.editor.getValue().length > 0;
+  }
+
+  /**
+   * Update params string & refresh PDF after settings changed.
+   *
+   * @param      {string}  params  New params string
+   */
+  settingsChanged(params): void {
+    this.params = params;
+    this.generate();
   }
 
   ngOnInit() {

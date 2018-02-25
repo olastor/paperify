@@ -10,7 +10,6 @@
           mat-icon-button
           color="primary"
           (click)="generate()"
-          [disabled]="errorParams.length > 0"
           title="Update Preview (Ctrl-S)"
         >
           <mat-icon>sync</mat-icon>
@@ -49,7 +48,12 @@
         </mat-menu>
       </div>
     </div>
-    <app-settings *ngIf="showSettings"></app-settings>
+    <app-settings
+      *ngIf="showSettings"
+      [currentParams]="params"
+      (close)="showSettings = !showSettings"
+      (update)="settingsChanged($event)"
+    ></app-settings>
     <div class="flex-fill editor-wrapper" [class.hidden]="showSettings">
       <div #editor id="editor"></div>
     </div>

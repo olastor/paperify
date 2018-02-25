@@ -1,15 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  styleUrls: ['./settings.component.css', '../../app.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnChanges {
+  @Input() currentParams: string;
+  @Output() public close: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public update: EventEmitter<any> = new EventEmitter<any>();
+
+  customParams: string = '';
+  flags = {
+    '--number-sections': false,
+    '--table-of-contents': false,
+    '--listings': false,
+    '--standalone': false,
+    '--no-highlight': false,
+    '--to=beamer': false,
+    '--incremental': false,
+  };
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges(): void {
+    if (this.currentParams) {
+      Object.keys(this.flags).map(p => {
+        if (this.currentParams.includes(p)) {
+          this.flags[p] = true;
+        }
+      });
+    }
   }
 
+  /**
+   * Generates whole parameters string and triggers update in parent component.
+   */
+  triggerUpdate(): void {
+    this.update.emit(
+      Object.keys(this.flags).filter(x => this.flags[x]).join(' ') + ' ' + this.customParams
+    );
+  }
 }

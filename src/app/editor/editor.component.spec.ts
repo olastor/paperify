@@ -6,6 +6,7 @@ import { MaterialModule } from '../shared/material.module';
 import { EditorComponent } from './editor.component';
 import { EditorService } from './editor.service';
 import { FakeEditorService } from './testing/fake-editor.service';
+import { SettingsComponent } from './settings/settings.component';
 
 describe('EditorComponent', () => {
   let component: EditorComponent;
@@ -20,7 +21,7 @@ describe('EditorComponent', () => {
         RouterTestingModule,
         NoopAnimationsModule
       ],
-      declarations: [ EditorComponent ],
+      declarations: [ EditorComponent, SettingsComponent ],
       providers: [
         { provide: EditorService, useClass: FakeEditorService }
       ]

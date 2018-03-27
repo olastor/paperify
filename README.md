@@ -6,7 +6,7 @@
 
 ## About
 
-This is a web client for editing and previewing documents, which are generated with [Pandoc](https://pandoc.org/). Please visit [paperify.org](https://www.paperify.org) for a demo.
+This is a web client for editing and previewing documents, which are generated with [Pandoc](https://pandoc.org/) and the [paperify backend](https://github.com/olastor/paperify-backend). Please visit [paperify.org](https://www.paperify.org) for a demo.
 
 ## Developement
 

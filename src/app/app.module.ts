@@ -18,6 +18,12 @@ import { HelpComponent } from './help/help.component';
 import { EditorRouteGuard } from './editor/editor.guard';
 import { ProfileComponent } from './profile/profile.component';
 
+import { ApiConfig } from '../api.config';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,9 +37,9 @@ import { ProfileComponent } from './profile/profile.component';
     HttpModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => localStorage.getItem('token'),
-        whitelistedDomains: ['localhost:3002'],
-        blacklistedRoutes: ['localhost:3002/auth/']
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:3002', 'paperify.org', 'dev.paperify.org'],
+        blacklistedRoutes: ['localhost:3002/auth/', 'paperify.org/auth', 'dev.paperify.org/auth']
       }
     }),
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),

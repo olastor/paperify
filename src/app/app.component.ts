@@ -9,7 +9,7 @@ import { UserService } from './shared/user.service';
 })
 export class AppComponent {
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private router: Router
   ) {
 

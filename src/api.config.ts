@@ -1,3 +1,3 @@
 export let ApiConfig = {
-  url: 'http://localhost:3002'
+  url: 'https://dev.paperify.org'
 };

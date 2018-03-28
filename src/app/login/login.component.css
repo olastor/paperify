@@ -1,0 +1,30 @@
+mat-card {
+  display: flex;
+  justify-content: center;
+}
+
+.separator {
+  width: 2px;
+  height: 300px;
+  background: #ccc;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+mat-icon[matPrefix] {
+  opacity: .5;
+  margin-right: 8px;
+  font-size: 1.3em;
+}
+
+.error, .success {
+  font-size: .9em;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}

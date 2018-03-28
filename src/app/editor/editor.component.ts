@@ -114,7 +114,7 @@ export class EditorComponent implements OnInit {
   hasUnsavedChanges(): boolean {
     const text = this.editor ? this.editor.getValue() : '';
     if (this.projectId) return this.lastSaved.content !== text || this.lastSaved.params !== this.params;
-    return text.length > 0 || this.params;
+    return text.length > 0 || this.params.length > 0;
   }
 
   /**
@@ -143,6 +143,8 @@ export class EditorComponent implements OnInit {
           },
           err => this.errorPreview = 'Could not save text.'
         );
+    } else {
+      this.generate(text);
     }
   }
   /**

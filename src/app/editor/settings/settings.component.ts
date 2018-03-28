@@ -25,11 +25,14 @@ export class SettingsComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.currentParams) {
+      let temp = this.currentParams;
       Object.keys(this.flags).map(p => {
-        if (this.currentParams.includes(p)) {
+        if (temp.includes(p)) {
           this.flags[p] = true;
+          temp = temp.replace(p, '');
         }
       });
+      this.customParams = temp.trim();
     }
   }
 

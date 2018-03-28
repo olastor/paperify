@@ -5,8 +5,8 @@ import { EditorComponent } from './editor.component';
 @Injectable()
 export class EditorRouteGuard implements CanDeactivate<EditorComponent> {
   canDeactivate(component: EditorComponent) {
-    if (component.hasChanges()) {
-      return window.confirm('Your text will be lost. Continue?');
+    if (component.hasUnsavedChanges()) {
+      return window.confirm('You have unsaved changes. Continue?');
     }
     return true;
   }

@@ -3,13 +3,14 @@
   <div class="writing">
     <div>
       <div *ngIf="!showSettings" class="panel">
+        <span *ngIf="lastSaved.date" class="info">Last saved: {{ lastSaved.date | date:'medium' }}</span>
         <!-- Action Buttons -->
         <div class="flex-fill"></div>
 
         <button
           mat-icon-button
           color="primary"
-          (click)="generate()"
+          (click)="update()"
           title="Update Preview (Ctrl-S)"
         >
           <mat-icon>sync</mat-icon>

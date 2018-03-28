@@ -28,6 +28,12 @@
   align-items: center;
   border-bottom: 1px solid #ccc;
 }
+.panel > .info {
+  font-family: monospace;
+  font-size: .8em;
+  padding-left: 10px;
+  opacity: .7;
+}
 
 .params {
   width: 100%;

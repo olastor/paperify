@@ -3,6 +3,15 @@
     <div class="mat-toolbar-single-row">
       <span class="logo" routerLink="/">Paperify</span>
       <span class="flex-fill"></span>
+      <button *ngIf="userService.isLoggedIn()" mat-icon-button title="Profile" routerLink="/profile">
+        <mat-icon>person</mat-icon>
+      </button>
+      <button *ngIf="!userService.isLoggedIn()" mat-icon-button title="Login" routerLink="/login">
+        <mat-icon>directions</mat-icon>
+      </button>
+      <button *ngIf="userService.isLoggedIn()" mat-icon-button title="Logout" (click)="logout()">
+        <mat-icon>power_settings_new</mat-icon>
+      </button>
       <button mat-icon-button title="Help" routerLink="/help">
         <mat-icon>help</mat-icon>
       </button>

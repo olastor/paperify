@@ -1,0 +1,14 @@
+<mat-card *ngIf="profile">
+  <mat-card-title>@{{ profile.username }}</mat-card-title>
+
+  <h3>Projects</h3>
+
+  <mat-list *ngIf="profile.projects">
+    <mat-list-item *ngFor="let project of profile.projects" [routerLink]="['/edit', project.id]">
+      <h4 mat-line>{{ project.metadata.title || 'Untitled' }}</h4>
+      <p mat-line *ngIf="project.metadata && project.metadata.author">Author: {{ project.metadata.author }}</p>
+      <p mat-line *ngIf="project.metadata && project.metadata.description">{{ project.metadata.description }}</p>
+      <p mat-line>{{ project.createdAt | date }}</p>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

@@ -1,0 +1,43 @@
+<mat-card>
+  <div>
+    <p>Login</p>
+    <form #loginForm (submit)="submitLogin($event)">
+      <div>
+        <mat-form-field>
+          <mat-icon matPrefix>perm_identity</mat-icon>
+          <input
+            matInput
+            name="username"
+            [(ngModel)]="username"
+            placeholder="Username"
+            type="text"
+            required
+          >
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <input
+            matInput
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Password"
+            type="password"
+            required
+          >
+        </mat-form-field>
+      </div>
+      <p *ngIf="successMsg" class="success">{{ successMsg }}</p>
+      <p *ngIf="errorMsg" class="error">{{ errorMsg }}</p>
+      <div>
+        <button [disabled]="!username || !password" mat-raised-button color="primary" type="submit">
+          Login
+        </button>
+        <button [disabled]="!username || !password" mat-raised-button (click)="submitSignup($event)">
+          Signup
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-card>

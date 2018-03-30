@@ -1,8 +1,10 @@
 import { Component, OnInit, ElementRef, Input, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiConfig } from '../../api.config';
 import { EditorService } from './editor.service';
+import { UserService } from '../shared/user.service';
 
 declare var ace: any;
 
@@ -18,6 +20,8 @@ export class EditorComponent implements OnInit {
 
   @ViewChild('editor', {read: ElementRef}) editorWrapper: ElementRef;
 
+  projectId: string;
+
   initialLoading: boolean = true;
   loading: boolean = false;
 
@@ -28,19 +32,31 @@ export class EditorComponent implements OnInit {
   previewUrl: any;
   token: string = ''; // = id for downloading
 
-  params: string = '';
+  params = '';
   reValidParams: RegExp;
+
+  lastSaved: {
+    content: string,
+    params: string,
+    date: Date
+  } = {
+    content: '',
+    params: '',
+    date: null
+  };
 
   showSettings: boolean = false;
 
   constructor(
     private editorService: EditorService,
+    private location: Location,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private userService: UserService
   ) {
     window.onbeforeunload = e => {
-      if (this.hasChanges()) {
-        const dialogText = 'Your text will be lost.';
+      if (this.hasUnsavedChanges()) {
+        const dialogText = 'You have unsaved changes. Continue?';
         e.returnValue = dialogText;
         return dialogText;
       }
@@ -91,8 +107,14 @@ export class EditorComponent implements OnInit {
         mac: 'Command-S',
         sender: 'editor|cli'
       },
-      exec: () => this.generate()
+      exec: () => this.update()
     });
+  }
+
+  hasUnsavedChanges(): boolean {
+    const text = this.editor ? this.editor.getValue() : '';
+    if (this.projectId) return this.lastSaved.content !== text || this.lastSaved.params !== this.params;
+    return text.length > 0 || this.params.length > 0;
   }
 
   /**
@@ -105,13 +127,30 @@ export class EditorComponent implements OnInit {
     window.open(ApiConfig.url + '/api/download/' + this.token + '/' + extension, '_blank');
   }
 
+  update(generate: boolean = true): void {
+    this.params = this.params ? this.params : '';
+    const text = this.editor.getValue();
+    if (this.projectId) {
+      this.userService.updateProject(this.projectId, text, this.params)
+        .subscribe(
+          () => {
+            this.lastSaved = {
+              content: text,
+              params: this.params,
+              date: new Date()
+            };
+            if (generate) this.generate(text);
+          },
+          err => this.errorPreview = 'Could not save text.'
+        );
+    } else {
+      this.generate(text);
+    }
+  }
   /**
    * Loads preview for the current state of the document.
    */
-  generate(evt = null): void {
-    if (evt) evt.preventDefault();
-
-    const text = this.editor.getValue();
+  generate(text: string): void {
     if (!this.checkParams() || !text || this.loading) return;
 
     this.loading = true;
@@ -136,22 +175,33 @@ export class EditorComponent implements OnInit {
   }
 
   /**
-   * Determines wether or not the user has written text in the editor.
-   *
-   * @return     {boolean}  True if editor text has changes, False otherwise.
-   */
-  hasChanges(): boolean {
-    return this.editor && this.editor.getValue().length > 0;
-  }
-
-  /**
    * Update params string & refresh PDF after settings changed.
    *
    * @param      {string}  params  New params string
    */
   settingsChanged(params): void {
     this.params = params;
-    this.generate();
+    this.update(false);
+  }
+
+  createProject(): void {
+    if (!this.userService.isLoggedIn()) {
+      this.initialLoading = false;
+      return;
+    }
+
+    this.userService.createProject()
+      .subscribe(
+        projectId => {
+          this.initialLoading = false;
+          this.projectId = projectId;
+          this.location.go('/edit/' + projectId);
+        },
+        err => {
+          this.initialLoading = false;
+          console.error(err);
+        }
+      );
   }
 
   ngOnInit() {
@@ -160,23 +210,26 @@ export class EditorComponent implements OnInit {
     // check URL params
     const id = this.route.snapshot.params['id'];
     if (id) {
-      // check for reserved id
-      if (['quickstart'].includes(id)) {
-        this.editorService
-          .getLocalDoc(id)
-          .subscribe(
-            res => {
-              this.initialLoading = false;
-              this.params = res['params'];
-              this.editor.setValue(res['text']);
-            },
-            () => this.initialLoading = false
-          );
-      } else {
-        this.initialLoading = false;
-      }
+      this.userService.getProject(id)
+        .subscribe(
+          res => {
+            this.initialLoading = false;
+            this.projectId = res.id;
+            this.editor.setValue(res.content);
+            this.params = res.compileOptions;
+            this.lastSaved = {
+              content: res.content,
+              params: this.params,
+              date: res.updatedAt
+            };
+          },
+          err => {
+            this.initialLoading = false;
+            console.error(err);
+          }
+        );
     } else {
-      this.initialLoading = false;
+      this.createProject();
     }
   }
 }

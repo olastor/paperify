@@ -155,7 +155,8 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initEditor();
+    // FIX: dirty way to fix https://github.com/olastor/paperify/issues/22
+    setTimeout(() => this.initEditor(), 50);
 
     // check URL params
     const id = this.route.snapshot.params['id'];
@@ -168,7 +169,9 @@ export class EditorComponent implements OnInit {
             res => {
               this.initialLoading = false;
               this.params = res['params'];
-              this.editor.setValue(res['text']);
+
+              // needs to wait for editor to be loaded
+              setTimeout(() => this.editor.setValue(res['text']), 75);
             },
             () => this.initialLoading = false
           );

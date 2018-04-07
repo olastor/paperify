@@ -12,11 +12,13 @@ import { AppComponent } from './app.component';
 import { EditorService } from './editor/editor.service';
 import { HelpComponent } from './help/help.component';
 import { EditorRouteGuard } from './editor/editor.guard';
+import { NotFoundComponent } from './notfound/notfound.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HelpComponent
+    HelpComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserAnimationsModule,

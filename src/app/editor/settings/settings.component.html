@@ -1,68 +1,65 @@
-<mat-tab-group>
-  <mat-tab label="Options">
-    <div class="wrapper-options">
-      <h4>General Options</h4>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--number-sections']">
-          <b>Number section headings</b> in LaTeX and PDF output.
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--table-of-contents']">
-          Include an automatically generated <b>table of contents</b> in the output document.
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--listings']">
-          Use the <b>listings package</b> for LaTeX code blocks.
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--standalone']">
-          Produce LaTeX (not PDF) output with an appropriate header and footer (<b>standalone</b>).
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--no-highlight']">
-          <b>Disable syntax highlighting</b> for code blocks and inlines, even when a language attribute is given.
-        </mat-checkbox>
-      </div>
+<div class="api-settings">
+  <form (submit)="addNewParam($event)" class="flex">
+    <mat-form-field class="flex-fill">
+      <input matInput [(ngModel)]="addingParamName" placeholder="Add Option" aria-label="Option" [matAutocomplete]="auto" [formControl]="optionsCtrl">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [title]="option.description">
+          <b>{{ option.name }}</b><span style="font-size: 0.8em"> {{ option.description }}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button
+      mat-icon-button
+      color="primary"
+      title="Add Param"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </form>
 
-      <h4>Beamer Options</h4>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--to=beamer']">
-          Create <b>beamer slides</b> instead of document.
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox [(ngModel)]="flags['--incremental']">
-          Make list items in slide shows display <b>incrementally</b> (one by one).
-        </mat-checkbox>
-      </div>
+  <mat-list role="list">
+    <mat-list-item role="listitem" *ngFor="let param of selectedParams" style="height: 60px;">
+      <mat-grid-list cols="5" rowHeight="60px" style="width: 100%;">
+        <mat-grid-tile
+          [colspan]="2"
+          [rowspan]="1"
+        >
+          <b [title]="param.description">{{ param.name }}</b>
+        </mat-grid-tile>
+        <mat-grid-tile
+          [colspan]="2"
+          [rowspan]="1"
+        >
+          <mat-select *ngIf="param && param.values" [(ngModel)]="param.value">
+            <mat-option *ngFor="let val of param.values" [value]="val">
+              {{ val }}
+            </mat-option>
+          </mat-select>
 
-      <h4>Advanced</h4>
-      <p>Add additional command line parameters to the pandoc build process.</p>
-      <div class="flex">
-        <mat-form-field class="flex-fill mono">
-          <input
-            matInput
-            type="text"
-            [(ngModel)]="customParams"
-            placeholder="CLI Parameters"
-            autocomplete="off"
+          <mat-form-field *ngIf="!param.values && param.type === 'string'" class="example-full-width">
+            <input matInput [(ngModel)]="param.value" value="Sushi">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="!param.values && param.type === 'number'" class="example-full-width">
+            <input matInput [(ngModel)]="param.value" value="Sushi" type="number">
+          </mat-form-field>
+
+          <mat-slide-toggle *ngIf="!param.values && param.type === 'boolean'" [(ngModel)]="param.value" checked></mat-slide-toggle>
+        </mat-grid-tile>
+        <mat-grid-tile
+          [colspan]="1"
+          [rowspan]="1"
+        >
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="removeParam(param)"
           >
-        </mat-form-field>
-      </div>
-
-      <button mat-raised-button (click)="close.emit()">
-        <mat-icon>close</mat-icon>
-        Close
-      </button>
-      <button mat-raised-button color="primary" (click)="triggerUpdate()">
-        <mat-icon>sync</mat-icon>
-        Save & Update
-      </button>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-list-item>
+  </mat-list>
+</div>
 

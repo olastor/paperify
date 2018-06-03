@@ -2,7 +2,7 @@
 <div [style.display]="initialLoading ? 'none': ''" class="wrapper">
   <div class="writing">
     <div>
-      <div *ngIf="!showSettings" class="panel">
+      <div class="panel">
         <!-- Action Buttons -->
         <div class="flex-fill"></div>
 
@@ -27,9 +27,10 @@
           mat-icon-button
           color="primary"
           (click)="showSettings = !showSettings"
-          title="Show Settings"
+          [title]="showSettings ? 'Hide Settings' : 'Show Settings'"
         >
-          <mat-icon>settings</mat-icon>
+          <mat-icon *ngIf="!showSettings">settings</mat-icon>
+          <mat-icon *ngIf="showSettings">cancel</mat-icon>
         </button>
 
         <mat-menu #downloadMenu="matMenu">
@@ -50,7 +51,8 @@
     </div>
     <app-settings
       *ngIf="showSettings"
-      [currentParams]="params"
+      [selectedParams]="selectedParams"
+      [validParams]="validParams"
       (close)="showSettings = !showSettings"
       (update)="settingsChanged($event)"
     ></app-settings>
@@ -69,8 +71,12 @@
       <mat-icon>desktop_windows</mat-icon>
       <p>A preview of your document will appear here.</p>
     </div>
-    <object *ngIf="previewUrl" [data]="previewUrl" type="application/pdf">
+    <object *ngIf="previewUrl && apiResponse && ['pdf', 'beamer'].includes(apiResponse.format)" [data]="previewUrl" type="application/pdf">
       <embed [src]="previewUrl" type="application/pdf" />
     </object>
+    <!-- TODO: style this -->
+    <pre *ngIf="apiResponse && !['pdf', 'beamer'].includes(apiResponse.format)">
+      {{ apiResponse.text }}
+    </pre>
   </div>
 </div>

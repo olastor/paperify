@@ -1,3 +1,4 @@
 export let ApiConfig = {
-  url: 'http://localhost:3002'
+  BACKEND_URL: 'http://localhost:3002',
+  API_URL: 'https://api.paperify.org'
 };

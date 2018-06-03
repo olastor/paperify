@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { ApiConfig } from '../../api.config';
 
 @Injectable()
@@ -16,14 +15,9 @@ export class EditorService {
    * @param      {string}  params  The parameters
    * @return     {Observable}  Handler for request.
    */
-  public generate(
-    text: string,
-    params: string = ''
-  ): Observable<any> {
+  public generate(options = {}): Observable<any> {
     return this.http.post(
-      ApiConfig.url + '/api/generate', JSON.stringify({
-        text, params
-      }), {
+      ApiConfig.API_URL + '/convert', JSON.stringify(options), {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -37,7 +31,7 @@ export class EditorService {
    */
   public getValidParams(): Observable<any> {
     return this.http.get(
-      ApiConfig.url + '/api/list/params', {
+      ApiConfig.API_URL + '/convert/params', {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         })

@@ -1,5 +1,5 @@
 import { TestHelper } from '../../shared/testing/test.helper';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class FakeEditorService {
   public generate(

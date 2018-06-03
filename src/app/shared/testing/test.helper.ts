@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ComponentFixture, tick } from '@angular/core/testing';
 
 export class TestHelper {

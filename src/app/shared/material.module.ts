@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -23,10 +24,12 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatGridListModule
 } from '@angular/material';
 
 const MATERIAL_MODULES = [
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -50,7 +53,8 @@ const MATERIAL_MODULES = [
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatGridListModule
 ];
 
 @NgModule({

@@ -1,4 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core';
+import {FormControl} from '@angular/forms';
+import { EditorService } from '../editor.service';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {ApiParam} from './apiparam';
 
 @Component({
   selector: 'app-settings',
@@ -6,46 +11,74 @@ import { Component, EventEmitter, Input, Output, OnChanges } from '@angular/core
   styleUrls: ['./settings.component.css', '../../app.component.css']
 })
 export class SettingsComponent implements OnChanges {
-  @Input() currentParams: string;
+  @Input() selectedParams: ApiParam[];
+  @Input() validParams: ApiParam[];
   @Output() public close: EventEmitter<any> = new EventEmitter<any>();
   @Output() public update: EventEmitter<any> = new EventEmitter<any>();
 
-  customParams: string = '';
-  flags = {
-    '--number-sections': false,
-    '--table-of-contents': false,
-    '--listings': false,
-    '--standalone': false,
-    '--no-highlight': false,
-    '--to=beamer': false,
-    '--incremental': false,
-  };
+  validParamsNames: string[] = [];
+  addingParamName = '';
+  addingParamValue: any;
 
-  constructor() { }
+  addingParam: ApiParam;
+
+  optionsCtrl: FormControl;
+  filteredOptions: Observable<any[]>;
+
+  constructor(
+    private editorService: EditorService
+  ) {
+    if (!this.validParamsNames) {
+      this.validParamsNames = this.validParams.map(x => x.name);
+    }
+
+    this.optionsCtrl = new FormControl();
+    this.filteredOptions = this.optionsCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this.filterStates(state) : this.validParams.slice())
+      );
+  }
 
   ngOnChanges(): void {
-    if (this.currentParams) {
-      let temp = this.currentParams;
+  }
 
-      // extract flags
-      Object.keys(this.flags).map(p => {
-        if (temp.includes(p)) {
-          this.flags[p] = true;
-          temp = temp.replace(p, '');
-        }
-      });
+  addNewParam(evt): void {
+    evt.preventDefault();
 
-      // extract additional params
-      this.customParams = temp.trim();
+    let newParam = this.validParams.filter(x => x.name === this.addingParamName);
+
+    if (!newParam) {
+      return;
+    }
+
+    const selectedParam = JSON.parse(JSON.stringify(newParam[0]));
+
+    if (selectedParam.values) {
+      selectedParam.value = selectedParam.values[0];
+    } else if (selectedParam.type === 'string') {
+      selectedParam.value = '';
+    } else if (selectedParam.type === 'number') {
+      selectedParam.value = 0;
+    } else if (selectedParam.type === 'boolean') {
+      selectedParam.value = true;
+    }
+
+    this.selectedParams.push(selectedParam);
+    this.addingParamName = '';
+  }
+
+  removeParam(target: ApiParam): void {
+    for (let i = 0; i < this.selectedParams.length; i++) {
+      if (this.selectedParams[i].name === target.name) {
+        this.selectedParams.splice(i, 1);
+        return;
+      }
     }
   }
 
-  /**
-   * Generates whole parameters string and triggers update in parent component.
-   */
-  triggerUpdate(): void {
-    this.update.emit(
-      Object.keys(this.flags).filter(x => this.flags[x]).join(' ') + ' ' + this.customParams
-    );
+  filterStates(name: string) {
+    return this.validParams.filter(state =>
+      state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 }

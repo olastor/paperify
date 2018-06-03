@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ApiConfig } from '../../api.config';
 import { EditorService } from './editor.service';
-
+import { ApiParam } from './settings/apiparam';
 declare var ace: any;
 
 @Component({
@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit {
 
   editor: any;
 
+  apiResponse: any;
   previewUrl: any;
   token: string = ''; // = id for downloading
 
@@ -32,6 +33,9 @@ export class EditorComponent implements OnInit {
   reValidParams: RegExp;
 
   showSettings: boolean = false;
+
+  validParams: ApiParam[] = [];
+  selectedParams: ApiParam[] = [];
 
   constructor(
     private editorService: EditorService,
@@ -46,9 +50,28 @@ export class EditorComponent implements OnInit {
       }
     };
 
-    this.editorService
-      .getValidParams()
-      .subscribe(res => this.reValidParams = new RegExp('^(\\s*|' + res.join('|') + ')*$'));
+    this.editorService.getValidParams()
+      .subscribe(res => {
+        this.validParams = res;
+
+        // set defaults,
+        // TODO: Make this less ugly later
+        this.validParams
+          .filter(x => x.name === 'from')
+          .map(x => {
+            const temp = x;
+            temp.value = 'markdown';
+            this.selectedParams.push(temp);
+          });
+
+        this.validParams
+          .filter(x => x.name === 'to')
+          .map(x => {
+            const temp = x;
+            temp.value = 'pdf';
+            this.selectedParams.push(temp);
+          });
+      });
   }
 
   /**
@@ -102,7 +125,7 @@ export class EditorComponent implements OnInit {
    */
   download(extension: string): void {
     if (!extension || !this.token) return;
-    window.open(ApiConfig.url + '/api/download/' + this.token + '/' + extension, '_blank');
+    window.open(ApiConfig.API_URL + '/api/download/' + this.token + '/' + extension, '_blank');
   }
 
   /**
@@ -112,18 +135,25 @@ export class EditorComponent implements OnInit {
     if (evt) evt.preventDefault();
 
     const text = this.editor.getValue();
-    if (!this.checkParams() || !text || this.loading) return;
+    if (!text || this.loading) return;
 
     this.loading = true;
-    this.editorService.generate(text, this.params)
+    const options = {
+      text: text
+    };
+
+    this.selectedParams.map(x => options[x.name] = x.value);
+    this.editorService.generate(options)
       .subscribe(
-        token => {
+        res => {
           this.loading = false;
           this.errorPreview = '';
-          this.token = token;
-          this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(ApiConfig.url + '/temp/' + token + '.pdf');
+          this.apiResponse = res;
+          // this.token = token;
+          this.previewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(res.previewLink);
         },
         err => {
+          console.log("err", err);
           this.loading = false;
 
           if (err.error instanceof ErrorEvent) {

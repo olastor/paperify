@@ -1,3 +1,7 @@
+:host {
+  padding-top: 20px;
+}
+
 mat-checkbox {
   font-size: 14px;
 }
@@ -18,4 +22,13 @@ mat-checkbox {
 .wrapper-options > div {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.api-settings {
+  max-width: 90%;
+  margin: auto;
+}
+
+.api-settings > form {
+  align-items: center;
 }

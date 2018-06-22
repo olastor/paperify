@@ -1,21 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MaterialModule } from '../shared/material.module';
-import { HelpComponent } from './help.component';
 
-describe('HelpComponent', () => {
-  let component: HelpComponent;
-  let fixture: ComponentFixture<HelpComponent>;
+import { ConverterComponent } from './converter.component';
+
+describe('ConverterComponent', () => {
+  let component: ConverterComponent;
+  let fixture: ComponentFixture<ConverterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ MaterialModule ],
-      declarations: [ HelpComponent ]
+      declarations: [ ConverterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HelpComponent);
+    fixture = TestBed.createComponent(ConverterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

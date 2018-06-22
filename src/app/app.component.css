@@ -3,9 +3,16 @@ mat-spinner {
 }
 
 .app-wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  text-align: center;
+}
+
+.header h1 {
+  margin-bottom: 0;
+}
+
+.header h3 {
+  font-weight: normal;
+  margin: 0;
 }
 
 .flex {
@@ -19,10 +26,13 @@ mat-spinner {
 
 .logo {
   text-transform: uppercase;
-  letter-spacing: .24em;
   cursor: pointer;
 }
 
 .content {
   height: 100%;
+}
+
+footer a {
+  margin-right: 10px;
 }

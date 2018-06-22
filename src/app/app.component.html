@@ -1,14 +1,15 @@
 <div class="app-wrapper">
-  <mat-toolbar class="static-toolbar" color="primary">
-    <div class="mat-toolbar-single-row">
-      <span class="logo" routerLink="/">Paperify</span>
-      <span class="flex-fill"></span>
-      <button mat-icon-button title="Help" routerLink="/help">
-        <mat-icon>help</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
+  <div class="header">
+    <h1 class="logo" routerLink="/">Paperify</h1>
+    <h3>Simplified Document Conversion</h3>
+  </div>
 
   <!-- Content goes here -->
   <router-outlet></router-outlet>
+
+  <footer>
+    <a href="https://github.com/olastor/paperify" target="_blank">Github</a>
+    <a routerLink="/privacy">Privacy Policy</a>
+    <a href="mailto:contact@paperify.org">Contact</a>
+  </footer>
 </div>

@@ -9,8 +9,6 @@ apt:
   packages:
   - google-chrome-stable
 before_install:
-- openssl aes-256-cbc -K $encrypted_4f2abea1a2b6_key -iv $encrypted_4f2abea1a2b6_iv
-  -in ci/deploy_rsa.enc -out ci/deploy_rsa -d
 - export CHROME_BIN=chromium-browser
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
@@ -18,12 +16,18 @@ script:
 - yarn lint
 - yarn test --watch=false
 - yarn build
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_4f2abea1a2b6_key -iv $encrypted_4f2abea1a2b6_iv
+  -in ci/deploy_rsa.enc -out /tmp/deploy_rsa -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/deploy_rsa
+- ssh-add /tmp/deploy_rsa
 deploy:
 - provider: script
-  script: scp -i ci/deploy_rsa -r -o StrictHostKeychecking=no dist/* ci@paperify.org:/var/www/paperify.org/html
+  script: scp -r -o StrictHostKeychecking=no dist/* ci@paperify.org:/var/www/paperify.org/html
   on:
     branch: master
-    tags: true
+    # tags: true
 cache:
   yarn: true
   directories:

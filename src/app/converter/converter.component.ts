@@ -45,7 +45,7 @@ export class ConverterComponent implements OnInit {
   ngOnInit() {
   }
 
-  convert(evt): void {
+  convert(): void {
     if (!this.selectedFrom || !this.selectedTo || !this.inputText) return;
 
     this.loading = true;

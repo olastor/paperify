@@ -27,6 +27,7 @@ export class ConverterComponent implements OnInit {
     { displayName: 'HTML', value: 'html' },
     { displayName: 'Markdown', value: 'markdown' },
     { displayName: 'LaTeX', value: 'latex' },
+    { displayName: 'ODT', value: 'odt' },
     { displayName: 'Docx', value: 'docx' },
     { displayName: 'Epub', value: 'epub' },
     { displayName: 'JSON', value: 'json' }

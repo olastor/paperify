@@ -1,12 +1,11 @@
 # Paperify
 
-[![Build Status](https://travis-ci.org/olastor/paperify.svg?branch=master)](https://travis-ci.org/olastor/paperify)
 [![dependencies Status](https://david-dm.org/olastor/paperify/status.svg)](https://david-dm.org/olastor/paperify)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## About
 
-A lightweight, yet powerful markup and document conversion web interface using [Pandoc](http://www.pandoc.org) at the backend.
+A lightweight, yet powerful markup and document conversion web interface (React) using [Pandoc](http://www.pandoc.org) at the backend.
 
 ## [DEMO](https://www.paperify.org)
 
@@ -18,7 +17,7 @@ After cloning do
 $ yarn && yarn start
 ```
 
-then navigate your browser to [http://localhost:4200](http://localhost:4200). For more information visit [https://cli.angular.io/](https://cli.angular.io/).
+then navigate your browser to [http://localhost:4200](http://localhost:4200).
 
 ## Production
 
@@ -28,4 +27,4 @@ Run
 $ yarn build
 ```
 
-then copy the build files from `dist/` to your webserver 
+then copy the build files from `build/` to your webserver

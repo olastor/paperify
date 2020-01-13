@@ -1,3 +1,5 @@
+# CURRENTLY NOT UNDER ACTIVE DEVELOPMENT
+
 # Paperify
 
 [![dependencies Status](https://david-dm.org/olastor/paperify/status.svg)](https://david-dm.org/olastor/paperify)
@@ -6,8 +8,6 @@
 ## About
 
 A lightweight, yet powerful markup and document conversion web interface (React) using [Pandoc](http://www.pandoc.org) at the backend.
-
-## [DEMO](https://www.paperify.org)
 
 ## Developement
 
